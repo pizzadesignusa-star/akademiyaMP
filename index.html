@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3F4F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12161C" media="(prefers-color-scheme: dark)">
 <meta name="description" content="Курс для селлеров Wildberries и Ozon: аналитика, склады, реклама, юнит-экономика в Excel.">
-<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
+<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}html{-webkit-text-size-adjust:100%}</style>
 <title>Академия селлера</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -98,6 +100,67 @@ td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowra
 .ticket .big b{font-family:var(--display);font-size:28px;font-variant-numeric:tabular-nums}
 .chip{display:inline-block;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:20px;margin-top:10px}
 .chip.ok{background:var(--good-soft);color:var(--good)}.chip.mid{background:var(--warn-soft);color:var(--warn)}.chip.bad{background:var(--accent-soft);color:var(--accent)}
+.fields input,.fields select{font-size:16px}
+.mnav,.calc-mini{display:none}
+/* ---------- phone ---------- */
+@media (max-width:860px){
+  .wrap{padding-inline:16px;padding-block:12px calc(96px + env(safe-area-inset-bottom,0px))}
+  header.top{padding-bottom:12px;border-bottom-width:1px;gap:10px}
+  .brand{font-size:22px}
+  .brand small{margin-bottom:4px;font-size:10.5px}
+  .overall{flex:1 1 100%;min-width:0}
+  .grid{margin-top:0;gap:0}
+  nav.side{display:none}
+  .mnav{display:block;position:sticky;top:env(safe-area-inset-top,0px);z-index:15;background:var(--bg);margin-inline:-16px;padding:10px 16px 0;border-bottom:1px solid var(--line)}
+  .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity}
+  .chips::-webkit-scrollbar{display:none}
+  .chip-m{all:unset;flex:none;cursor:pointer;display:flex;align-items:center;gap:7px;padding:9px 14px;border:1px solid var(--line);border-radius:22px;background:var(--surface);font-size:14px;font-weight:500;scroll-snap-align:start;white-space:nowrap}
+  .chip-m .c{font-family:var(--mono);font-size:11px;color:var(--muted)}
+  .chip-m.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .chip-m.on .c{color:var(--bg);opacity:.7}
+  .chip-m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  details.toc{padding-bottom:10px}
+  details.toc summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px;font-weight:600;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:6px;min-height:44px}
+  details.toc summary::-webkit-details-marker{display:none}
+  details.toc summary .s{font-family:var(--mono);font-weight:400;font-size:12px;color:var(--muted);white-space:nowrap}
+  details.toc summary .s::after{content:" ▾"}
+  details.toc[open] summary .s::after{content:" ▴"}
+  details.toc ul{list-style:none;margin:6px 0 0;padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:6px;max-height:55vh;overflow:auto}
+  .lesson-link{min-height:44px;align-items:center;font-size:15px}
+  main.pane{border:0;border-radius:0;background:transparent;padding:18px 0 0}
+  h1{font-size:24px;margin:6px 0 16px}
+  h2{font-size:17px;margin-top:26px}
+  .foot{position:fixed;left:0;right:0;bottom:0;z-index:20;margin:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);flex-wrap:nowrap;gap:8px}
+  .foot .btn{min-height:46px;display:flex;align-items:center;justify-content:center;padding:0 14px;font-size:14px;text-align:center}
+  .foot .btn.primary{flex:1;min-width:0}
+  .foot .btn[disabled]{opacity:.25}
+  .opt{padding:13px 14px;min-height:46px}
+  .q{padding:14px}
+  .calc{padding-bottom:58px}
+  .calc-mini{display:flex;justify-content:space-between;align-items:center;gap:10px;position:fixed;left:0;right:0;z-index:19;bottom:calc(66px + env(safe-area-inset-bottom,0px));padding:10px 16px;background:var(--ink);color:var(--bg);font-size:14px}
+  .calc-mini b{font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums;white-space:nowrap}
+}
+@media (max-width:600px){
+  .tbl{overflow:visible}
+  .tbl table,.tbl tbody,.tbl tr,.tbl td{display:block;min-width:0;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin-bottom:10px;background:var(--surface)}
+  .tbl td{border:0;padding:4px 0;font-size:14.5px}
+  .tbl td::before{content:attr(data-label);display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .tbl td:first-child{font-weight:600;font-size:15.5px;padding-bottom:6px}
+  .tbl td:first-child::before{display:none}
+  td.n{white-space:normal}
+  .formula{font-size:12.5px;padding:10px 12px}
+  .note{padding:12px 14px}
+  .prose ul,.prose ol{padding-left:20px}
+}
+@media (max-width:340px){.fields{grid-template-columns:1fr}}
+@media (max-width:420px){
+  .fields{gap:8px 10px}
+  .fields label{font-size:12.5px}
+  .foot .lbl{display:none}
+  .foot .btn[data-nav]{width:46px;padding:0}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.btn:hover{transform:none}}
 </style>
 </head>
@@ -112,6 +175,7 @@ td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowra
       <div class="bar"><i id="ovBar"></i></div>
     </div>
   </header>
+  <div class="mnav" id="mnav"></div>
   <div class="grid">
     <nav class="side" id="side" aria-label="Модули курса"></nav>
     <main class="pane" id="pane" aria-live="polite"></main>
@@ -331,6 +395,20 @@ function renderSide(){
   }).join("");
 }
 
+const SHORT = {an:"Аналитика",sk:"Склады",ad:"Реклама",ue:"Юнит-экономика",sv:"Самовыкупы"};
+function renderMobile(){
+  const [cm,ci] = state.cur, m = MODULES.find(x=>x.id===cm);
+  const items = m.lessons.map((l,i)=>[l.title,i]).concat([["Тест по модулю",m.lessons.length]]);
+  const n = items.length, d = items.filter(([,i])=>state.done[key(cm,i)]).length;
+  const curTitle = ci===m.lessons.length ? "Тест по модулю" : (ci+1)+". "+m.lessons[ci].title;
+  document.getElementById("mnav").innerHTML = `
+    <div class="chips" role="tablist">${MODULES.map(x=>`<button class="chip-m ${x.id===cm?"on":""}" role="tab" aria-selected="${x.id===cm}" data-mod="${x.id}"><span class="c">${x.code}</span>${SHORT[x.id]}</button>`).join("")}</div>
+    <details class="toc"><summary><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${curTitle}</span><span class="s">${d}/${n}</span></summary>
+      <ul>${items.map(([t,i])=>`<li><button class="lesson-link ${state.done[key(cm,i)]?"done":""} ${ci===i?"on":""}" data-go="${cm}:${i}"><span class="dot"></span>${t}</button></li>`).join("")}</ul>
+    </details>`;
+  const on = document.querySelector(".chip-m.on"); if(on) on.scrollIntoView({block:"nearest",inline:"center"});
+}
+
 function flat(){ const a=[]; MODULES.forEach(m=>{ for(let i=0;i<=m.lessons.length;i++) a.push([m.id,i]); }); return a; }
 
 function renderPane(){
@@ -346,10 +424,14 @@ function renderPane(){
     <h1>${isQuiz?"Проверьте себя":l.title}</h1>
     ${body}
     <div class="foot">
-      <button class="btn" data-nav="-1" ${pos===0?"disabled":""}>← Назад</button>
-      ${isQuiz?"":`<button class="btn primary ${done?"done":""}" data-mark>${done?"Урок пройден ✓":"Отметить пройденным"}</button>`}
-      <button class="btn" data-nav="1" ${pos===list.length-1?"disabled":""}>Далее →</button>
+      <button class="btn" data-nav="-1" aria-label="Назад" ${pos===0?"disabled":""}>←<span class="lbl">&nbsp;Назад</span></button>
+      ${isQuiz?`<span style="flex:1"></span>`:`<button class="btn primary ${done?"done":""}" data-mark>${done?"Урок пройден ✓":"Отметить пройденным"}</button>`}
+      <button class="btn" data-nav="1" aria-label="Далее" ${pos===list.length-1?"disabled":""}><span class="lbl">Далее&nbsp;</span>→</button>
     </div>`;
+  document.querySelectorAll("#pane .tbl table").forEach(t=>{
+    const heads=[...t.querySelectorAll("th")].map(th=>th.textContent);
+    t.querySelectorAll("tbody tr").forEach(tr=>[...tr.children].forEach((td,i)=>td.setAttribute("data-label",heads[i]||"")));
+  });
   if(isQuiz) bindQuiz(m);
   if(l && l.calc) bindCalc();
 }
@@ -388,6 +470,7 @@ function calcHTML(){
       ?`<label for="c_${id}">${lab}<select id="c_${id}"><option${v[id]==="Ozon"?"":" selected"}>Wildberries</option><option${v[id]==="Ozon"?" selected":""}>Ozon</option></select></label>`
       :`<label for="c_${id}">${lab}<input id="c_${id}" type="number" inputmode="decimal" step="any" value="${v[id]??def}"></label>`).join("")}</div>
     <div class="ticket" id="ticket"></div>
+    <div class="calc-mini" aria-hidden="true"><span>Прибыль с единицы</span><b id="calcMini"></b></div>
   </div>`;
 }
 const rub = x => (isFinite(x)?x:0).toLocaleString("ru-RU",{minimumFractionDigits:2,maximumFractionDigits:2})+" ₽";
@@ -402,6 +485,7 @@ function bindCalc(){
     const acq=P*g("acq")/100, mpTotal=com+logU+g("stor")+acq, ads=P*g("drr")/100, tax=P*g("tax")/100;
     const profit=P-full-mpTotal-ads-tax, preAd=profit+ads, margin=P?profit/P:0, roi=full?profit/full:0;
     const maxCPO=preAd*buy, maxCPC=maxCPO*g("cr")/100, maxCPM=maxCPC*g("ctr")/100*1000;
+    document.getElementById("calcMini").textContent = rub(profit)+" · "+pct(margin);
     const chip = margin>=.2?["ok","Хорошая маржа"]:margin>=.1?["mid","Тонкая маржа — мало запаса"]:["bad","Убыток или почти ноль"];
     document.getElementById("ticket").innerHTML = `
       <div class="row"><span>Себестоимость полная</span><span>${rub(full)}</span></div>
@@ -423,10 +507,10 @@ function bindCalc(){
 }
 
 /* ---------- events ---------- */
-function render(){ renderSide(); renderPane(); progress(); }
+function render(){ renderSide(); renderMobile(); renderPane(); progress(); }
 document.addEventListener("click",e=>{
   const t = e.target.closest("button"); if(!t) return;
-  if(t.dataset.mod){ state.cur=[t.dataset.mod,0]; save(); render(); }
+  if(t.dataset.mod){ state.cur=[t.dataset.mod,0]; save(); render(); scrollPane(); }
   else if(t.dataset.go){ const [m,i]=t.dataset.go.split(":"); state.cur=[m,+i]; save(); render(); scrollPane(); }
   else if(t.dataset.nav){ const l=flat(), p=l.findIndex(([a,b])=>a===state.cur[0]&&b===state.cur[1]); const n=l[p+ +t.dataset.nav]; if(n){ state.cur=n; save(); render(); scrollPane(); } }
   else if(t.hasAttribute("data-mark")){ const k=key(...state.cur); if(state.done[k]) delete state.done[k]; else state.done[k]=1; save(); render(); }
@@ -437,7 +521,15 @@ document.addEventListener("click",e=>{
     save(); render();
   }
 });
-function scrollPane(){ const p=document.getElementById("pane"); if(p.getBoundingClientRect().top<0) p.scrollIntoView({behavior:"smooth",block:"start"}); }
+function scrollPane(){
+  const p=document.getElementById("pane"), mn=document.getElementById("mnav");
+  const off = mn.offsetHeight ? mn.offsetHeight+4 : 12;
+  const y = p.getBoundingClientRect().top + window.scrollY - off;
+  if(window.scrollY > y){
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({top:Math.max(0,y),behavior:reduce?"auto":"smooth"});
+  }
+}
 render();
 </script>
 
