@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Курс для селлеров Wildberries и Ozon: аналитика, склады, реклама, юнит-экономика в Excel.">
+<style>[hidden]{display:none!important}img{max-width:100%}body{margin:0}</style>
+<title>Академия селлера</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sidebar of modules (стеллаж) + lesson pane; shipping-label orange as the single accent */
+:root{
+  --bg:#F3F4F1; --surface:#FFFFFF; --ink:#18202B; --muted:#5E6672; --line:#DADDD6;
+  --accent:#D9481F; --accent-soft:#FBE6DE; --good:#1F7A5A; --good-soft:#DDF1E8; --warn:#9A6400; --warn-soft:#FBEFD5;
+  --display:"Unbounded",system-ui,sans-serif; --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12161C; --surface:#1A2029; --ink:#E8EAE6; --muted:#9AA3AF; --line:#2C3440;
+  --accent:#FF7A50; --accent-soft:#3A2219; --good:#5CC79C; --good-soft:#163328; --warn:#E5B04D; --warn-soft:#3A2E14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161C; --surface:#1A2029; --ink:#E8EAE6; --muted:#9AA3AF; --line:#2C3440;
+  --accent:#FF7A50; --accent-soft:#3A2219; --good:#5CC79C; --good-soft:#163328; --warn:#E5B04D; --warn-soft:#3A2E14; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:24px 64px}
+header.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:2px solid var(--ink)}
+.brand{font-family:var(--display);font-weight:700;font-size:clamp(22px,4vw,34px);line-height:1.1;letter-spacing:-.01em;text-wrap:balance}
+.brand small{display:block;font-family:var(--mono);font-weight:400;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.overall{min-width:220px;flex:0 1 300px}
+.overall .lbl{font-family:var(--mono);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:6px}
+.bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s}
+.grid{display:grid;grid-template-columns:290px minmax(0,1fr);gap:28px;margin-top:24px}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+nav.side{display:flex;flex-direction:column;gap:6px;align-self:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px)}
+@media (max-width:860px){nav.side{position:static}}
+.mod{border:1px solid var(--line);background:var(--surface);border-radius:6px}
+.mod>button{all:unset;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;width:100%;padding:12px 14px;box-sizing:border-box}
+.mod>button:focus-visible,.lesson-link:focus-visible,.btn:focus-visible,.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.code{font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 6px;border:1.5px solid var(--ink);border-radius:3px;letter-spacing:.04em}
+.mod.active .code{background:var(--accent);border-color:var(--accent);color:#fff}
+.mod .t{font-weight:600;font-size:15px;line-height:1.3}
+.mod .pct{font-family:var(--mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.mod ul{list-style:none;margin:0;padding:0 8px 10px}
+.lesson-link{all:unset;cursor:pointer;display:flex;gap:10px;align-items:baseline;padding:6px 8px;border-radius:4px;font-size:14px;color:var(--muted);box-sizing:border-box;width:100%}
+.lesson-link:hover{color:var(--ink);background:var(--bg)}
+.lesson-link.on{color:var(--ink);background:var(--accent-soft)}
+.lesson-link .dot{flex:none;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--muted);transform:translateY(1px)}
+.lesson-link.done .dot{background:var(--good);border-color:var(--good)}
+main.pane{min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:clamp(20px,4vw,40px)}
+.crumbs{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(24px,3.4vw,34px);line-height:1.15;margin:8px 0 20px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:500;font-size:19px;margin:32px 0 10px;text-wrap:balance}
+.prose{max-width:68ch}
+.prose p,.prose li{margin:0 0 10px}
+.prose ul,.prose ol{padding-left:22px;margin:0 0 14px}
+.prose b{font-weight:600}
+.term{font-family:var(--mono);font-size:.88em;background:var(--bg);border:1px solid var(--line);padding:1px 5px;border-radius:3px;white-space:nowrap}
+.formula{font-family:var(--mono);font-size:14px;background:var(--bg);border-left:3px solid var(--ink);padding:12px 16px;margin:14px 0;overflow-x:auto;white-space:pre-wrap}
+.note{border-radius:6px;padding:14px 16px;margin:16px 0;font-size:15px}
+.note.warn{background:var(--warn-soft);border:1px solid var(--warn)}
+.note.good{background:var(--good-soft);border:1px solid var(--good)}
+.note .h{font-weight:600;display:block;margin-bottom:4px}
+.tbl{overflow-x:auto;margin:14px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.foot{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px dashed var(--line)}
+.btn{all:unset;cursor:pointer;font-weight:600;font-size:15px;padding:10px 18px;border-radius:5px;border:1.5px solid var(--ink);box-sizing:border-box}
+.btn.primary{background:var(--ink);color:var(--bg)}
+.btn.primary.done{background:var(--good);border-color:var(--good);color:#fff}
+.btn:hover{transform:translateY(-1px)}
+.btn[disabled]{opacity:.4;pointer-events:none}
+/* quiz */
+.q{border:1px solid var(--line);border-radius:6px;padding:16px;margin:14px 0}
+.q .qt{font-weight:600;margin-bottom:10px}
+.opts{display:grid;gap:8px}
+.opt{all:unset;cursor:pointer;padding:10px 12px;border:1px solid var(--line);border-radius:5px;font-size:15px;box-sizing:border-box}
+.opt:hover{border-color:var(--ink)}
+.opt.right{background:var(--good-soft);border-color:var(--good)}
+.opt.wrong{background:var(--accent-soft);border-color:var(--accent)}
+.exp{font-size:14px;color:var(--muted);margin-top:10px}
+.score{font-family:var(--mono);font-size:14px;margin-top:10px}
+/* calculator */
+.calc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;margin-top:10px}
+@media (max-width:720px){.calc{grid-template-columns:1fr}}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+@media (max-width:420px){.fields{grid-template-columns:1fr}}
+.fields label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.fields input,.fields select{font:inherit;font-family:var(--mono);font-size:15px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:8px 10px;width:100%}
+.fields input:focus,.fields select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.ticket{border:1.5px solid var(--ink);border-radius:6px;padding:18px;align-self:start;background:var(--bg)}
+.ticket .row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dotted var(--line);font-size:14px}
+.ticket .row span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ticket .big{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;gap:10px}
+.ticket .big b{font-family:var(--display);font-size:28px;font-variant-numeric:tabular-nums}
+.chip{display:inline-block;font-family:var(--mono);font-size:12px;padding:3px 8px;border-radius:20px;margin-top:10px}
+.chip.ok{background:var(--good-soft);color:var(--good)}.chip.mid{background:var(--warn-soft);color:var(--warn)}.chip.bad{background:var(--accent-soft);color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.btn:hover{transform:none}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><small>Курс для селлеров · Wildberries и Ozon</small>Академия селлера</div>
+    <div class="overall">
+      <div class="lbl"><span>Пройдено уроков</span><span id="ovTxt">0 / 0</span></div>
+      <div class="bar"><i id="ovBar"></i></div>
+    </div>
+  </header>
+  <div class="grid">
+    <nav class="side" id="side" aria-label="Модули курса"></nav>
+    <main class="pane" id="pane" aria-live="polite"></main>
+  </div>
+</div>
+
+<script>
+const T = s => `<span class="term">${s}</span>`;
+const MODULES = [
+{ id:"an", code:"M1", title:"Аналитика WB и Ozon", lessons:[
+ { title:"Воронка продаж: какие цифры смотреть", html:`
+<p>Любая карточка проходит один путь: покупатель увидел товар, открыл карточку, положил в корзину, заказал, выкупил. На каждом шаге часть людей отваливается. Аналитика нужна, чтобы найти шаг, где теряется больше всего.</p>
+<div class="tbl"><table><thead><tr><th>Метрика</th><th>Формула</th><th>Что показывает</th></tr></thead><tbody>
+<tr><td>Показы</td><td>—</td><td>Сколько раз карточку увидели в поиске, каталоге, рекомендациях</td></tr>
+<tr><td>CTR</td><td class="n">Переходы ÷ Показы</td><td>Цепляет ли главное фото, цена и рейтинг</td></tr>
+<tr><td>Конверсия в корзину</td><td class="n">Корзины ÷ Переходы</td><td>Убеждает ли карточка: фото, описание, отзывы</td></tr>
+<tr><td>Конверсия в заказ</td><td class="n">Заказы ÷ Корзины</td><td>Не отпугивает ли срок доставки и итоговая цена</td></tr>
+<tr><td>Процент выкупа</td><td class="n">Выкупы ÷ Заказы</td><td>Совпадает ли товар с ожиданием: размер, качество, фото</td></tr>
+</tbody></table></div>
+<h2>Где смотреть</h2>
+<ul>
+<li><b>Wildberries:</b> раздел аналитики в кабинете продавца — воронка продаж по артикулам, поисковые запросы, а для денег — еженедельный отчёт о реализации.</li>
+<li><b>Ozon:</b> раздел «Аналитика» — графики и воронка по товарам, позиции в поиске; деньги — в отчёте о реализации и разделе «Финансы».</li>
+</ul>
+<div class="note good"><span class="h">Правило чтения воронки</span>Сравнивайте не с «нормой из интернета», а со своими же цифрами за прошлый период и с конкурентами в вашей нише. CTR 3% хорош для одежды и слаб для дешёвых аксессуаров.</div>`},
+ { title:"Как найти проблему в карточке", html:`
+<p>Двигайтесь по воронке сверху вниз и остановитесь на первом слабом месте. Чинить нижние шаги, пока не работает верхний, бесполезно.</p>
+<div class="tbl"><table><thead><tr><th>Симптом</th><th>Вероятная причина</th><th>Что делать</th></tr></thead><tbody>
+<tr><td>Мало показов</td><td>Карточка не попадает в поиск</td><td>Проверить название, характеристики, категорию; посмотреть, по каким запросам показывается</td></tr>
+<tr><td>Показы есть, CTR низкий</td><td>Слабое главное фото или цена выше соседей</td><td>Сделать 2–3 варианта обложки и сравнить, проверить цену в выдаче</td></tr>
+<tr><td>Переходы есть, корзин мало</td><td>Карточка не отвечает на вопросы</td><td>Инфографика, размерная сетка, ответы на вопросы, работа с отзывами</td></tr>
+<tr><td>Заказы есть, выкуп низкий</td><td>Товар не совпадает с ожиданием</td><td>Читать отзывы о возвратах, честные фото, точные размеры</td></tr>
+</tbody></table></div>
+<h2>Ритм работы</h2>
+<ol><li>Раз в день — заказы, остатки, расход рекламы.</li><li>Раз в неделю — воронка по каждому артикулу и отчёт о реализации.</li><li>Раз в месяц — юнит-экономика с фактическими цифрами, решение по ассортименту.</li></ol>`},
+ { title:"Оборачиваемость и остатки", html:`
+<p>Оборачиваемость показывает, за сколько дней продаётся текущий остаток. Если она большая — вы платите за хранение и замораживаете деньги. Если маленькая — скоро закончится товар, и карточка потеряет позиции.</p>
+<div class="formula">Оборачиваемость, дней = Остаток на складах ÷ Средние продажи в день
+Запас к заказу = Продажи в день × (Срок поставки + Страховой запас, дней) − Остаток − Товар в пути</div>
+<p><b>Пример.</b> Остаток 600 шт., продаёте 20 в день — оборачиваемость 30 дней. Поставка от фабрики идёт 25 дней, страховой запас 10 дней: нужно 20 × 35 = 700 шт. Минус 600 на складе — заказать 100 шт. уже сейчас.</p>
+<div class="note warn"><span class="h">Частая ошибка</span>Считать среднюю продажу по дням, когда товара не было в наличии. Такие дни исключайте, иначе спрос получится заниженным.</div>`}
+], quiz:[
+ {q:"Показов много, а переходов в карточку мало. Что проверить первым?", o:["Описание товара","Главное фото и цену в выдаче","Процент выкупа"], a:1, e:"Низкий CTR — это то, что видно в выдаче до клика: обложка, цена, рейтинг."},
+ {q:"Остаток 900 шт., продажи 30 шт. в день. Оборачиваемость?", o:["30 дней","27 дней","300 дней"], a:0, e:"900 ÷ 30 = 30 дней."},
+ {q:"Где смотреть, сколько денег площадка реально перечислит?", o:["В воронке продаж","В отчёте о реализации","В статистике рекламы"], a:1, e:"Отчёт о реализации показывает продажи, удержания, логистику и сумму к выплате."}
+]},
+{ id:"sk", code:"M2", title:"Склады и логистика", lessons:[
+ { title:"Схемы работы: FBO, FBS, DBS", html:`
+<div class="tbl"><table><thead><tr><th>Схема</th><th>Где товар</th><th>Кто доставляет</th><th>Когда подходит</th></tr></thead><tbody>
+<tr><td>${T("FBO")} / ${T("FBW")}</td><td>На складе площадки</td><td>Площадка</td><td>Ходовой товар, нужна быстрая доставка и высокие позиции</td></tr>
+<tr><td>${T("FBS")}</td><td>На вашем складе</td><td>Вы везёте в пункт приёма, дальше площадка</td><td>Широкий ассортимент, крупногабарит, тест новинок</td></tr>
+<tr><td>${T("DBS")} / ${T("realFBS")}</td><td>На вашем складе</td><td>Вы сами до покупателя</td><td>Мебель, техника с установкой, локальная доставка</td></tr>
+</tbody></table></div>
+<p>На WB схему со склада площадки называют FBW, на Ozon — FBO. Суть одна. Многие селлеры комбинируют: основной объём на складе площадки, хвосты ассортимента по FBS.</p>
+<div class="note good"><span class="h">Почему склад площадки обычно выигрывает</span>Покупатель видит срок доставки. Чем он короче, тем выше конверсия и позиции в выдаче.</div>`},
+ { title:"Распределение по регионам и локализация", html:`
+<p>Если товар лежит только на складе в Подмосковье, а покупатель в Новосибирске, доставка идёт долго и стоит дороже. Обе площадки учитывают долю «локальных» продаж — когда заказ отгружается со склада в регионе покупателя — и меняют от этого стоимость логистики и скорость доставки.</p>
+<h2>Как распределять</h2>
+<ol>
+<li>Выгрузите продажи по регионам или федеральным округам за 30–60 дней.</li>
+<li>Посчитайте долю каждого округа в заказах.</li>
+<li>Разложите поставку по складам в тех же пропорциях.</li>
+<li>Через месяц сравните долю локальных продаж и стоимость логистики до и после.</li>
+</ol>
+<div class="formula">Поставка на склад региона = Общая поставка × Доля региона в заказах
+Пример: 1000 шт. × 18% (Сибирь) = 180 шт. на сибирский склад</div>
+<div class="note warn"><span class="h">Проверяйте актуальные правила</span>Формулы локализации, коэффициенты и тарифы площадки меняют несколько раз в год. Перед поставкой смотрите действующие условия в кабинете продавца.</div>`},
+ { title:"Приёмка, коэффициенты и хранение", html:`
+<p>На складах площадки есть лимиты приёмки. На загруженные склады приёмка может стоить дороже обычного — это показывает коэффициент: ×1 — базовая цена, ×5 — в пять раз дороже, «бесплатно» — без доплаты.</p>
+<ul>
+<li>Планируйте поставки заранее и выбирайте окна с низким коэффициентом.</li>
+<li>Смотрите не только приёмку, но и логистику со склада: дешёвая приёмка на далёкий склад может обернуться дорогой доставкой.</li>
+<li>Хранение платное, обычно за объём или за единицу в день. Неликвид дешевле распродать, чем хранить.</li>
+</ul>
+<div class="formula">Хранение на 1 проданную ед. ≈ Тариф хранения в день × Оборачиваемость, дней</div>
+<p>Пример: 0,15 ₽ в день за единицу × 40 дней оборачиваемости = 6 ₽ на каждую продажу. Эту цифру заносим в юнит-экономику.</p>`}
+], quiz:[
+ {q:"Товар лежит у вас, а до покупателя его везёт площадка. Это…", o:["FBO","FBS","DBS"], a:1, e:"FBS: хранение у продавца, доставка — силами площадки."},
+ {q:"Поставка 2000 шт., доля Урала в заказах 12%. Сколько везти на уральский склад?", o:["120","240","200"], a:1, e:"2000 × 0,12 = 240."},
+ {q:"Коэффициент приёмки ×3 означает…", o:["Приёмка втрое дороже базовой","Приёмка через 3 дня","Можно сдать 3 коробки"], a:0, e:"Коэффициент умножает базовую стоимость приёмки."}
+]},
+{ id:"ad", code:"M3", title:"Настройка рекламы", lessons:[
+ { title:"Реклама на Wildberries", html:`
+<p>Внутренняя реклама WB — это аукцион. Вы ставите ставку, но место определяет не только она: учитывается релевантность и качество карточки.</p>
+<div class="tbl"><table><thead><tr><th>Тип</th><th>Как работает</th><th>Когда использовать</th></tr></thead><tbody>
+<tr><td>Единая ставка</td><td>Одна ставка, площадка сама показывает карточку в поиске и рекомендациях</td><td>Старт, сбор статистики, удержание хороших позиций</td></tr>
+<tr><td>Ручная ставка</td><td>Вы выбираете зону показов и ставку для каждой</td><td>Вывод карточки вверх по конкретным запросам, точный контроль</td></tr>
+</tbody></table></div>
+<p>Оплата бывает за 1000 показов (${T("CPM")}), за клик (${T("CPC")}) или за заказ (${T("CPO")}) — доступные варианты зависят от формата кампании. Минимальные ставки зависят от категории.</p>
+<h2>Запуск по шагам</h2>
+<ol><li>Убедитесь, что юнит-экономика сходится без рекламы.</li><li>Запустите кампанию с единой ставкой на 3–5 дней.</li><li>Посмотрите, по каким запросам пошли клики и заказы, исключите нерелевантные фразы.</li><li>Перенесите рабочие запросы в ручную кампанию и управляйте ставкой.</li></ol>
+<div class="note warn"><span class="h">Главное правило</span>Реклама ускоряет то, что уже есть. Если карточка не продаёт сама, реклама ускорит убыток.</div>`},
+ { title:"Реклама на Ozon", html:`
+<div class="tbl"><table><thead><tr><th>Модель</th><th>За что платите</th><th>Когда использовать</th></tr></thead><tbody>
+<tr><td>Оплата за клик</td><td>За переход в карточку; объединяет прежние форматы вывода в топ и трафаретов</td><td>Нужен трафик и контроль ставок по запросам</td></tr>
+<tr><td>Оплата за заказ</td><td>Процент от цены оформленного заказа</td><td>Хочется предсказуемой стоимости продажи, мало опыта</td></tr>
+<tr><td>Медийная реклама</td><td>Баннеры, показы или клики</td><td>Бренд, запуск крупной линейки</td></tr>
+</tbody></table></div>
+<p>Настраивается в разделе «Продвижение» кабинета продавца. Модели можно совмещать: оплата за заказ даёт базовый поток, оплата за клик — рост по выбранным запросам.</p>
+<div class="note good"><span class="h">Перед запуском</span>Рейтинг ниже 4,5, мало отзывов, слабые фото или цена выше рынка — сначала исправьте это. Иначе клики будут, заказов нет.</div>`},
+ { title:"Считаем окупаемость рекламы", html:`
+<div class="formula">CTR = Клики ÷ Показы
+CPC = Расход ÷ Клики        (или CPM ÷ (CTR × 1000))
+CR  = Заказы ÷ Клики
+CPO = Расход ÷ Заказы        (стоимость одного заказа)
+ДРР = Расход ÷ Сумма заказов × 100%</div>
+<p><b>Пример.</b> 12 000 показов, 420 кликов, 21 заказ, расход 4 800 ₽, заказов на 31 290 ₽.</p>
+<ul><li>CTR = 420 ÷ 12 000 = 3,5%</li><li>CPC = 4 800 ÷ 420 = 11,43 ₽</li><li>CR = 21 ÷ 420 = 5%</li><li>CPO = 4 800 ÷ 21 = 228,57 ₽</li><li>ДРР = 4 800 ÷ 31 290 = 15,3%</li></ul>
+<h2>Предельная ставка</h2>
+<div class="formula">Макс. CPO = Прибыль на единицу до рекламы × % выкупа
+Макс. CPC = Макс. CPO × CR
+Макс. CPM = Макс. CPC × CTR × 1000</div>
+<p>Если прибыль до рекламы 420 ₽, выкуп 82%, CR 5%, CTR 3,5%: макс. CPO ≈ 344 ₽, макс. CPC ≈ 17,2 ₽, макс. CPM ≈ 602 ₽. Всё, что выше, — работа в минус. Прибыль до рекламы считается в калькуляторе модуля M4.</p>`}
+], quiz:[
+ {q:"Расход 3 000 ₽, заказов на 20 000 ₽. ДРР?", o:["6,7%","15%","30%"], a:1, e:"3 000 ÷ 20 000 = 15%."},
+ {q:"CPM 300 ₽, CTR 3%. Сколько стоит клик?", o:["10 ₽","9 ₽","30 ₽"], a:0, e:"CPC = 300 ÷ (0,03 × 1000) = 10 ₽."},
+ {q:"Какой тип кампании WB даёт выбрать зону показов и ставку для каждой?", o:["Единая ставка","Ручная ставка","Оплата за заказ"], a:1, e:"Ручная ставка — ставка по каждой зоне отдельно."}
+]},
+{ id:"ue", code:"M4", title:"Юнит-экономика в Excel", lessons:[
+ { title:"Из чего складывается прибыль с единицы", html:`
+<p>Юнит-экономика отвечает на один вопрос: сколько денег остаётся с одной проданной штуки после всех расходов.</p>
+<div class="tbl"><table><thead><tr><th>Блок</th><th>Что входит</th><th>Откуда брать</th></tr></thead><tbody>
+<tr><td>Себестоимость</td><td>Закупка, доставка до склада площадки, упаковка, маркировка</td><td>Ваши накладные и счета</td></tr>
+<tr><td>Комиссия</td><td>% от цены продажи</td><td>Тарифы категории в кабинете</td></tr>
+<tr><td>Логистика</td><td>Доставка к покупателю и обратно при невыкупе</td><td>Тарифы и отчёт о реализации</td></tr>
+<tr><td>Хранение</td><td>Тариф × дни на складе</td><td>Отчёт о хранении</td></tr>
+<tr><td>Реклама</td><td>ДРР × цена</td><td>Статистика кампаний</td></tr>
+<tr><td>Налог и эквайринг</td><td>% от выручки</td><td>Ваш налоговый режим, тарифы</td></tr>
+</tbody></table></div>
+<h2>Главная ловушка — выкуп</h2>
+<p>Каждый невыкупленный заказ съедает логистику дважды: туда и обратно. Поэтому логистику делят на процент выкупа.</p>
+<div class="formula">Логистика на проданную ед. = Логистика ÷ %выкупа + Обратная логистика × (1 − %выкупа) ÷ %выкупа</div>
+<p>При логистике 78 ₽, возврате 50 ₽ и выкупе 82% выходит не 78, а 106 ₽ на каждую продажу.</p>`},
+ { title:"Как заносить данные в таблицу", html:`
+<p>К курсу приложен готовый файл Excel с формулами: <a href="unit-ekonomika-shablon.xlsx" download style="color:var(--accent);font-weight:600">скачать шаблон юнит-экономики (.xlsx)</a>. Вот как с ним работать.</p>
+<ol>
+<li><b>Одна строка — один артикул.</b> Не смешивайте размеры с разной себестоимостью в одной строке.</li>
+<li><b>Жёлтые ячейки — ввод.</b> Серые считаются сами, туда ничего не пишите.</li>
+<li><b>Проценты вводите со знаком %:</b> 24,5% — Excel хранит это как 0,245, формулы это ожидают.</li>
+<li><b>Цена продажи — после всех скидок</b>, по которой покупатель реально платит. Не цена «до скидки».</li>
+<li><b>Выкуп и логистику берите фактические</b> за последние 30–60 дней, а не из справки.</li>
+<li><b>Раз в месяц сверяйте</b> с отчётом о реализации: если прибыль в таблице и в отчёте расходится больше чем на 10%, ищите забытую статью расходов.</li>
+</ol>
+<h2>Столбцы шаблона</h2>
+<div class="formula">Ввод:    Артикул | Площадка | Закупка | Доставка до склада | Упаковка | Цена | Комиссия % |
+         Логистика | Обратная логистика | Выкуп % | Хранение | Эквайринг % | ДРР % | Налог %
+Расчёт:  Себестоимость | Комиссия ₽ | Логистика на ед. | Расходы площадки | Реклама ₽ |
+         Налог ₽ | Прибыль | Маржа % | ROI % | Макс. CPO</div>
+<p>Второй лист «Реклама» — дневная статистика кампаний: вносите показы, клики, заказы и расход, CTR, CPC, CPO и ДРР посчитаются сами.</p>
+<div class="note good"><span class="h">Ориентиры</span>Маржинальность ниже 15% оставляет мало места для ошибок и акций. ROI ниже 30% — повод пересмотреть закупку или цену.</div>`},
+ { title:"Калькулятор: посчитайте свой товар", calc:true }
+], quiz:[
+ {q:"Логистика 100 ₽, обратная 50 ₽, выкуп 50%. Логистика на проданную единицу?", o:["150 ₽","250 ₽","200 ₽"], a:1, e:"100 ÷ 0,5 + 50 × 0,5 ÷ 0,5 = 200 + 50 = 250 ₽."},
+ {q:"Какую цену вносить в столбец «Цена продажи»?", o:["Цену до скидки","Цену после всех скидок продавца","Себестоимость × 2"], a:1, e:"Комиссия и налог считаются от цены, которую реально платит покупатель."},
+ {q:"Прибыль 300 ₽, себестоимость 600 ₽, цена 1 500 ₽. ROI?", o:["20%","50%","200%"], a:1, e:"ROI = 300 ÷ 600 = 50%. Маржа = 300 ÷ 1 500 = 20%."}
+]},
+{ id:"sv", code:"M5", title:"Самовыкупы: правила и риски", lessons:[
+ { title:"Что такое самовыкуп и почему это риск", html:`
+<p>Самовыкуп — когда продавец сам или через нанятых людей заказывает свой товар, чтобы поднять количество продаж, позиции в выдаче и отзывы. Это популярная тема, поэтому важно понимать её трезво.</p>
+<div class="note warn"><span class="h">Позиция площадок</span>Правила Wildberries и Ozon запрещают искусственно накручивать продажи, рейтинг и отзывы. Площадки отслеживают такие заказы. Последствия — штрафы, обнуление рейтинга, скрытие карточек, блокировка кабинета. Покупатели, которые доверились накрученным отзывам, получают не тот товар, на который рассчитывали.</div>
+<h2>Почему это часто невыгодно даже по деньгам</h2>
+<ul>
+<li>Вы платите комиссию, логистику и налог с собственной покупки.</li>
+<li>Посредники берут плату за каждый заказ.</li>
+<li>Если карточка слабая, после остановки накрутки продажи падают обратно.</li>
+<li>Риск потерять весь кабинет несоизмерим с выгодой по одному артикулу.</li>
+</ul>
+<p>В этом курсе мы не учим проводить самовыкупы и обходить проверки. Ниже — как разглядеть их в чужих цифрах и чем заменить.</p>`},
+ { title:"Как это видно в аналитике конкурентов", html:`
+<p>При анализе ниши важно отличать реальный спрос от накрученного, иначе вы закупите товар под несуществующие продажи.</p>
+<ul>
+<li>Резкий скачок продаж новой карточки без рекламы и без роста запросов в нише.</li>
+<li>Много коротких однотипных отзывов за короткий срок.</li>
+<li>Высокие продажи при очень слабой карточке: плохие фото, пустое описание.</li>
+<li>Продажи обрываются сразу после выхода в топ.</li>
+</ul>
+<div class="note good"><span class="h">Вывод для закупки</span>Оценивайте спрос по нише целиком и по нескольким конкурентам, а не по одной «звёздной» карточке.</div>`},
+ { title:"Честные способы быстро набрать отзывы и продажи", html:`
+<div class="tbl"><table><thead><tr><th>Инструмент</th><th>Как помогает</th></tr></thead><tbody>
+<tr><td>Отзывы за баллы на Ozon</td><td>Реальные покупатели получают бонус за отзыв о купленном товаре</td></tr>
+<tr><td>Стимулирование отзывов на WB</td><td>Проверьте в кабинете действующие инструменты площадки для поощрения отзывов</td></tr>
+<tr><td>Стартовая скидка и акции площадки</td><td>Первые продажи реальным покупателям без нарушения правил</td></tr>
+<tr><td>Внутренняя реклама</td><td>Даёт показы новинке, пока у неё нет истории продаж</td></tr>
+<tr><td>Внешний трафик</td><td>Блогеры, соцсети, свои каналы — ссылки на карточку</td></tr>
+<tr><td>Карточка-«витрина»</td><td>Сильные фото, инфографика, видео поднимают конверсию без затрат на каждый заказ</td></tr>
+</tbody></table></div>
+<p>Затраты на запуск — скидку, рекламу, бонусы за отзывы — заносите в юнит-экономику как расходы периода запуска, чтобы видеть, когда товар выйдет в плюс.</p>`}
+], quiz:[
+ {q:"Чем грозят самовыкупы по правилам площадок?", o:["Ничем, это разрешено","Штрафы, снижение рейтинга, блокировка","Только повышенной комиссией"], a:1, e:"Накрутка продаж и отзывов запрещена правилами обеих площадок."},
+ {q:"Новая карточка с плохими фото резко взлетела без рекламы. Как оценивать нишу?", o:["Срочно закупать такой же товар","Проверить спрос по нише и нескольким конкурентам","Ориентироваться только на эту карточку"], a:1, e:"Одна карточка может быть накручена — смотрите нишу целиком."},
+ {q:"Какой инструмент Ozon помогает собрать отзывы честно?", o:["Отзывы за баллы","Покупка через знакомых","Дубли карточек"], a:0, e:"Реальные покупатели получают баллы за отзыв о купленном товаре."}
+]}
+];
+
+/* ---------- state ---------- */
+let state = { done:{}, quiz:{}, cur:["an",0] };
+try{ const s = JSON.parse(localStorage.getItem("akademiya-v1")); if(s) state = Object.assign(state,s); }catch(e){}
+const save = () => { try{ localStorage.setItem("akademiya-v1", JSON.stringify(state)); }catch(e){} };
+const key = (m,i) => m+":"+i;
+const totalLessons = MODULES.reduce((n,m)=>n+m.lessons.length+1,0);
+
+function progress(){
+  const done = Object.keys(state.done).length;
+  document.getElementById("ovTxt").textContent = done+" / "+totalLessons;
+  document.getElementById("ovBar").style.width = (done/totalLessons*100)+"%";
+}
+
+function renderSide(){
+  const [cm] = state.cur;
+  document.getElementById("side").innerHTML = MODULES.map(m=>{
+    const n = m.lessons.length+1, d = [...Array(n).keys()].filter(i=>state.done[key(m.id,i)]).length;
+    const items = m.lessons.map((l,i)=>[l.title,i]).concat([["Тест по модулю",m.lessons.length]]);
+    return `<div class="mod ${m.id===cm?"active":""}">
+      <button data-mod="${m.id}" aria-expanded="${m.id===cm}"><span class="code">${m.code}</span><span class="t">${m.title}</span><span class="pct">${d}/${n}</span></button>
+      ${m.id===cm?`<ul>${items.map(([t,i])=>`<li><button class="lesson-link ${state.done[key(m.id,i)]?"done":""} ${state.cur[1]===i?"on":""}" data-go="${m.id}:${i}"><span class="dot"></span>${t}</button></li>`).join("")}</ul>`:""}
+    </div>`;
+  }).join("");
+}
+
+function flat(){ const a=[]; MODULES.forEach(m=>{ for(let i=0;i<=m.lessons.length;i++) a.push([m.id,i]); }); return a; }
+
+function renderPane(){
+  const [mid,i] = state.cur, m = MODULES.find(x=>x.id===mid), isQuiz = i===m.lessons.length;
+  const l = m.lessons[i], k = key(mid,i), done = !!state.done[k];
+  const list = flat(), pos = list.findIndex(([a,b])=>a===mid&&b===i);
+  let body;
+  if(isQuiz) body = quizHTML(m);
+  else if(l.calc) body = calcHTML();
+  else body = `<div class="prose">${l.html}</div>`;
+  document.getElementById("pane").innerHTML = `
+    <div class="crumbs">${m.code} · ${m.title} · ${isQuiz?"тест":"урок "+(i+1)+" из "+m.lessons.length}</div>
+    <h1>${isQuiz?"Проверьте себя":l.title}</h1>
+    ${body}
+    <div class="foot">
+      <button class="btn" data-nav="-1" ${pos===0?"disabled":""}>← Назад</button>
+      ${isQuiz?"":`<button class="btn primary ${done?"done":""}" data-mark>${done?"Урок пройден ✓":"Отметить пройденным"}</button>`}
+      <button class="btn" data-nav="1" ${pos===list.length-1?"disabled":""}>Далее →</button>
+    </div>`;
+  if(isQuiz) bindQuiz(m);
+  if(l && l.calc) bindCalc();
+}
+
+function quizHTML(m){
+  const st = state.quiz[m.id]||{};
+  return m.quiz.map((q,qi)=>{
+    const ans = st[qi];
+    return `<div class="q"><div class="qt">${qi+1}. ${q.q}</div><div class="opts">${q.o.map((o,oi)=>{
+      let c=""; if(ans!==undefined){ if(oi===q.a) c="right"; else if(oi===ans) c="wrong"; }
+      return `<button class="opt ${c}" data-q="${qi}" data-o="${oi}">${o}</button>`;}).join("")}</div>
+      ${ans!==undefined?`<div class="exp">${ans===q.a?"Верно. ":"Неверно. "}${q.e}</div>`:""}</div>`;
+  }).join("") + `<div class="score" id="score"></div>`;
+}
+function bindQuiz(m){
+  const st = state.quiz[m.id] = state.quiz[m.id]||{};
+  const answered = Object.keys(st).length, right = Object.entries(st).filter(([qi,a])=>m.quiz[qi].a===a).length;
+  document.getElementById("score").innerHTML = answered===m.quiz.length
+    ? `Результат: ${right} из ${m.quiz.length}. ${right===m.quiz.length?"Модуль закрыт.":"<button class='btn' id='retry' style='margin-left:8px;padding:6px 12px;font-size:14px'>Пройти заново</button>"}`
+    : `Отвечено ${answered} из ${m.quiz.length}`;
+  const r = document.getElementById("retry"); if(r) r.onclick = ()=>{ state.quiz[m.id]={}; delete state.done[key(m.id,m.lessons.length)]; save(); render(); };
+}
+
+/* ---------- calculator ---------- */
+const CF = [
+ ["mp","Площадка","sel"],["price","Цена после скидок, ₽",1490],["cost","Закупка за ед., ₽",420],["inb","Доставка до склада МП, ₽",35],
+ ["pack","Упаковка и маркировка, ₽",25],["com","Комиссия, %",24.5],["log","Логистика к покупателю, ₽",78],["ret","Обратная логистика, ₽",50],
+ ["buy","Выкуп, %",82],["stor","Хранение на ед., ₽",6],["acq","Эквайринг и прочие, %",1.5],["drr","Реклама (ДРР), %",10],["tax","Налог, %",6],
+ ["ctr","CTR рекламы, %",3.5],["cr","Конверсия клик→заказ, %",5]
+];
+function calcHTML(){
+  const v = state.calc||{};
+  return `<div class="prose"><p>Подставьте свои цифры — расчёт идёт по тем же формулам, что в Excel-шаблоне. Значения по умолчанию — условный пример.</p></div>
+  <div class="calc">
+    <div class="fields">${CF.map(([id,lab,def])=>def==="sel"
+      ?`<label for="c_${id}">${lab}<select id="c_${id}"><option${v[id]==="Ozon"?"":" selected"}>Wildberries</option><option${v[id]==="Ozon"?" selected":""}>Ozon</option></select></label>`
+      :`<label for="c_${id}">${lab}<input id="c_${id}" type="number" inputmode="decimal" step="any" value="${v[id]??def}"></label>`).join("")}</div>
+    <div class="ticket" id="ticket"></div>
+  </div>`;
+}
+const rub = x => (isFinite(x)?x:0).toLocaleString("ru-RU",{minimumFractionDigits:2,maximumFractionDigits:2})+" ₽";
+const pct = x => (isFinite(x)?x*100:0).toLocaleString("ru-RU",{maximumFractionDigits:1})+"%";
+function bindCalc(){
+  const g = id => parseFloat(document.getElementById("c_"+id).value)||0;
+  const run = ()=>{
+    state.calc = {}; CF.forEach(([id])=>state.calc[id]=document.getElementById("c_"+id).value); save();
+    const P=g("price"), buy=g("buy")/100;
+    const full=g("cost")+g("inb")+g("pack"), com=P*g("com")/100;
+    const logU = buy>0 ? g("log")/buy + g("ret")*(1-buy)/buy : 0;
+    const acq=P*g("acq")/100, mpTotal=com+logU+g("stor")+acq, ads=P*g("drr")/100, tax=P*g("tax")/100;
+    const profit=P-full-mpTotal-ads-tax, preAd=profit+ads, margin=P?profit/P:0, roi=full?profit/full:0;
+    const maxCPO=preAd*buy, maxCPC=maxCPO*g("cr")/100, maxCPM=maxCPC*g("ctr")/100*1000;
+    const chip = margin>=.2?["ok","Хорошая маржа"]:margin>=.1?["mid","Тонкая маржа — мало запаса"]:["bad","Убыток или почти ноль"];
+    document.getElementById("ticket").innerHTML = `
+      <div class="row"><span>Себестоимость полная</span><span>${rub(full)}</span></div>
+      <div class="row"><span>Комиссия</span><span>${rub(com)}</span></div>
+      <div class="row"><span>Логистика на проданную ед.</span><span>${rub(logU)}</span></div>
+      <div class="row"><span>Хранение, эквайринг</span><span>${rub(g("stor")+acq)}</span></div>
+      <div class="row"><span>Реклама</span><span>${rub(ads)}</span></div>
+      <div class="row"><span>Налог</span><span>${rub(tax)}</span></div>
+      <div class="big"><span>Прибыль с единицы</span><b>${rub(profit)}</b></div>
+      <div class="row"><span>Маржинальность</span><span>${pct(margin)}</span></div>
+      <div class="row"><span>ROI</span><span>${pct(roi)}</span></div>
+      <span class="chip ${chip[0]}">${chip[1]}</span>
+      <div style="margin-top:16px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)">Предельные ставки рекламы</div>
+      <div class="row"><span>Макс. CPO (за заказ)</span><span>${rub(maxCPO)}</span></div>
+      <div class="row"><span>Макс. CPC (за клик)</span><span>${rub(maxCPC)}</span></div>
+      <div class="row"><span>Макс. CPM (за 1000 показов)</span><span>${rub(maxCPM)}</span></div>`;
+  };
+  CF.forEach(([id])=>document.getElementById("c_"+id).addEventListener("input",run)); run();
+}
+
+/* ---------- events ---------- */
+function render(){ renderSide(); renderPane(); progress(); }
+document.addEventListener("click",e=>{
+  const t = e.target.closest("button"); if(!t) return;
+  if(t.dataset.mod){ state.cur=[t.dataset.mod,0]; save(); render(); }
+  else if(t.dataset.go){ const [m,i]=t.dataset.go.split(":"); state.cur=[m,+i]; save(); render(); scrollPane(); }
+  else if(t.dataset.nav){ const l=flat(), p=l.findIndex(([a,b])=>a===state.cur[0]&&b===state.cur[1]); const n=l[p+ +t.dataset.nav]; if(n){ state.cur=n; save(); render(); scrollPane(); } }
+  else if(t.hasAttribute("data-mark")){ const k=key(...state.cur); if(state.done[k]) delete state.done[k]; else state.done[k]=1; save(); render(); }
+  else if(t.dataset.q!==undefined){
+    const m=MODULES.find(x=>x.id===state.cur[0]), st=state.quiz[m.id]=state.quiz[m.id]||{};
+    if(st[t.dataset.q]!==undefined) return; st[t.dataset.q]=+t.dataset.o;
+    if(Object.keys(st).length===m.quiz.length) state.done[key(m.id,m.lessons.length)]=1;
+    save(); render();
+  }
+});
+function scrollPane(){ const p=document.getElementById("pane"); if(p.getBoundingClientRect().top<0) p.scrollIntoView({behavior:"smooth",block:"start"}); }
+render();
+</script>
+
+</body>
+</html>
